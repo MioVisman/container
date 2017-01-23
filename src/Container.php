@@ -61,10 +61,8 @@ class Container implements ContainerInterface
             $f = [$this->get($factoryName), $methodName]; /** @var string $f suppress IDE warning :( */
             $service = $f(...$args);
         } else {
+            $args[] = $this; // передача контейнера сразу в конструктор
             $service = new $class(...$args);
-            if ($service instanceof ContainerAwareInterface) {
-                $service->setContainer($this);
-            }
         }
         if ($toShare) {
             $this->instances[$id] = $service;
